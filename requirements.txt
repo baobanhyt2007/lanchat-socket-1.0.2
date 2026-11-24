@@ -1,0 +1,5 @@
+# The project intentionally uses only the Python standard library.
+# Python 3.8+ (tested on 3.8.10 on Windows 10/11).
+#
+# Nothing to install. Run:
+#   python -m lanchat --name Quan --port 5001

@@ -1,0 +1,35 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # setup-python has no Python 3.8 build for ubuntu-24.04+/26.04,
+        # so pin the oldest interpreter to the last LTS that ships it.
+        include:
+          - os: ubuntu-22.04
+            python: "3.8"
+          - os: ubuntu-latest
+            python: "3.11"
+          - os: windows-latest
+            python: "3.8"
+          - os: windows-latest
+            python: "3.11"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Show version
+        run: python --version
+      - name: Byte-compile the package
+        run: python -m compileall -q lanchat tests
+      - name: Run unit + integration tests
+        run: python -m unittest discover -s tests -v

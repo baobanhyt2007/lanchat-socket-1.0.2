@@ -1,0 +1,31 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Test / tooling output
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# Runtime output
+downloads/*
+!downloads/.gitkeep
+*.part
+*.log
+
+# Wireshark captures can be large; keep the notes, add pcaps on purpose
+docs/wireshark/*.pcapng
+docs/wireshark/*.pcap
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+.~lock.*#

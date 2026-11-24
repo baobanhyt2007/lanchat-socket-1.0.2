@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phòng Chat MMT · Tự hào Việt Nam</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Thanh thương hiệu Việt Nam & ĐH Khoa học Tự nhiên -->
+  <div class="vn-ribbon">
+    <div class="vn-ribbon-left">
+      <svg class="vn-flag" viewBox="0 0 30 20" aria-label="Cờ Việt Nam">
+        <rect width="30" height="20" rx="2" fill="#DA251D" />
+        <polygon
+          fill="#FFCD00"
+          points="15,4 16.35,8.15 20.71,8.15 17.18,10.71 18.53,14.85 15,12.29 11.47,14.85 12.82,10.71 9.29,8.15 13.65,8.15"
+        />
+      </svg>
+      <span>TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN · ĐHQG-HCM</span>
+    </div>
+    <div class="vn-ribbon-right">★ LAN Web Chat · Kết nối sinh viên Việt Nam ★</div>
+  </div>
+
+  <!-- Màn hình đăng nhập nhanh -->
+  <div id="loginModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-emblems">
+        <div class="school-logo-wrap modal-logo">
+          <img
+            src="logo-khtn.png"
+            alt="Logo Trường ĐH Khoa học Tự nhiên"
+            class="school-logo-img"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+          />
+          <div class="school-logo-fallback" style="display: none;">KHTN</div>
+        </div>
+        <svg class="vn-flag modal-flag" viewBox="0 0 30 20" aria-label="Cờ Việt Nam">
+          <rect width="30" height="20" rx="3" fill="#DA251D" />
+          <polygon
+            fill="#FFCD00"
+            points="15,4 16.35,8.15 20.71,8.15 17.18,10.71 18.53,14.85 15,12.29 11.47,14.85 12.82,10.71 9.29,8.15 13.65,8.15"
+          />
+        </svg>
+      </div>
+
+      <span class="modal-tag">ĐẠI HỌC KHOA HỌC TỰ NHIÊN</span>
+      <h1>KHTN LAN Chat</h1>
+      <p>Nhập tên hiển thị của bạn để tham gia phòng chat thời gian thực</p>
+
+      <form id="loginForm">
+        <input
+          type="text"
+          id="usernameInput"
+          placeholder="Ví dụ: Bảo - CNTT, Minh, Linh..."
+          maxlength="24"
+          required
+          autocomplete="off"
+        />
+        <button type="submit" class="btn-primary">★ Vào phòng chat</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Giao diện chính -->
+  <div class="app-shell">
+    <!-- Thanh bên trái -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="school-logo-wrap">
+            <img
+              src="logo-khtn.png"
+              alt="Logo ĐH Khoa học Tự nhiên"
+              class="school-logo-img"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+            />
+            <div class="school-logo-fallback" style="display: none;">KHTN</div>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">MMT Chat</span>
+            <span class="brand-sub">Sắc đỏ Việt Nam</span>
+          </div>
+        </div>
+        <button id="themeToggle" class="icon-btn" title="Đổi giao diện Sáng/Tối">☀️</button>
+      </div>
+
+      <div class="search-box">
+        <input type="text" id="peerSearch" placeholder="Tìm sinh viên đang online..." />
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-title">MTT chat</div>
+        <ul id="roomList" class="chat-list">
+          <li class="chat-item active" data-room="general">
+            <div class="avatar channel-avatar">★</div>
+            <div class="chat-item-info">
+              <div class="chat-item-name">Phòng chung MTT</div>
+              <div class="chat-item-sub">Tất cả thành viên</div>
+            </div>
+            <span class="unread-badge hidden" id="badge-general">0</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section peers-section">
+        <div class="section-title">
+          Đang trực tuyến <span id="peerCount" class="count-pill">0</span>
+        </div>
+        <ul id="peerList" class="chat-list">
+          <li class="empty-peers">Mở thêm 1 tab nữa để chat 2 chiều!</li>
+        </ul>
+      </div>
+
+      <!-- Thông tin bản thân -->
+      <div class="me-bar">
+        <div id="meAvatar" class="avatar">?</div>
+        <div class="me-info">
+          <div id="meName" class="me-name">Chưa đăng nhập</div>
+          <button id="statusToggle" class="status-pill online" title="Nhấn để đổi trạng thái">
+            <span class="status-dot"></span>
+            <span id="meStatusText">Online</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Khu vực chat chính -->
+    <main class="chat-main" id="dropZone">
+      <header class="chat-header">
+        <div class="chat-header-left">
+          <div id="activeAvatar" class="avatar channel-avatar">★</div>
+          <div>
+            <h2 id="activeTitle">Phòng chung của Nhóm 9</h2>
+            <p id="activeSubtitle">Trò chuyện cùng tất cả thành viên đang mở</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <span class="vn-chip">★ Việt Nam</span>
+          <button id="clearChatBtn" class="btn-ghost" title="Xóa lịch sử hiển thị">Xóa màn hình</button>
+        </div>
+      </header>
+
+      <div id="messagesContainer" class="messages-container">
+        <div class="system-notice">Chào mừng đến với đồ án môn Mạng Máy Tính của Nhóm 9 Chat. Kéo thả ảnh hoặc tài liệu vào đây để gửi nhanh.</div>
+      </div>
+
+      <div id="typingIndicator" class="typing-indicator hidden"></div>
+
+      <!-- Bảng chọn Emoji nhanh -->
+      <div id="emojiPicker" class="emoji-picker hidden">
+        <span>🇻🇳</span><span>⭐</span><span>🔥</span><span>❤️</span>
+        <span>😀</span><span>😂</span><span>😍</span><span>😎</span>
+        <span>👍</span><span>🎉</span><span>🎓</span><span>📚</span>
+        <span>💻</span><span>☕</span><span>🚀</span><span>💯</span>
+      </div>
+
+      <form id="messageForm" class="composer">
+        <input type="file" id="fileInput" hidden />
+        <button type="button" id="attachBtn" class="icon-btn" title="Gửi file hoặc ảnh (tối đa 5MB)">📎</button>
+        <button type="button" id="emojiBtn" class="icon-btn" title="Chèn biểu tượng cảm xúc">😊</button>
+        <input
+          type="text"
+          id="messageInput"
+          placeholder="Nhập tin nhắn..."
+          autocomplete="off"
+        />
+        <button type="submit" class="btn-send">Gửi ★</button>
+      </form>
+
+      <!-- Lớp phủ khi kéo thả file -->
+      <div id="dropOverlay" class="drop-overlay hidden">
+        <div class="drop-box">Thả file vào đây để gửi ngay</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
